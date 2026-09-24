@@ -7,9 +7,9 @@ Alinhado ao Plano de Curso — Habilitação Técnica em Desenvolvimento de Sist
 ---
 
 ## 👥 Identificação da Equipe
-* **Integrantes:** [Inserir Nome do Aluno 1], [Inserir Nome do Aluno 2]
-* **Turma:** [Inserir Turma, ex: 2TDS]
-* **Instituição:** SENAI-SP [2]
+* **Integrantes:** Isadora Aquino Moraes
+* **Turma:** 2 DEV - OCZ
+* **Instituição:** SENAI-SP
 
 ---
 
