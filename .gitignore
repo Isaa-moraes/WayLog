@@ -12,3 +12,4 @@ package-lock.json
 metro.config.js
 AGENTS.md
 LICENSE
+expo-env.d.ts
