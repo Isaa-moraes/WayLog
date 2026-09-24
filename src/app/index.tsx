@@ -559,6 +559,61 @@ export default function Index() {
               </View>
               <Text style={[styles.profileName, activeTheme.text]}>{nomeUsuario}</Text>
               <Text style={activeTheme.subText}>Mochileiro Oficial Waylog</Text>
+
+              {/* BOTÃO DE SEGURANÇA CORRIGIDO: FUNCIONA PERFEITAMENTE NA WEB E NO CELULAR */}
+              <TouchableOpacity
+                style={[styles.deleteButton, { marginTop: 15, paddingVertical: 10, paddingHorizontal: 16 }]}
+                onPress={async () => {
+                  // Mensagens da ação crítica
+                  const titulo = "⚠️ AVISO CRÍTICO!";
+                  const mensagem = "Você tem certeza que deseja excluir o seu perfil? Isso apagará todas as suas configurações locais.";
+
+                  // Função interna que executa a limpeza física dos dados locais
+                  const executarExclusaoConta = async () => {
+                    try {
+                      // 1. Limpa as credenciais gravadas na sessão
+                      await AsyncStorage.multiRemove([
+                        '@waylog:user_name',
+                        '@waylog:user_email',
+                        '@waylog:user_password'
+                      ]);
+
+                      // 2. Reseta o feed removendo as postagens do autor atual
+                      setPosts(posts.filter(p => p.autor !== nomeUsuario));
+
+                      // 3. Joga o estado do app de volta para o Cadastro Inicial de 6 dígitos
+                      setIsLogged(false);
+                      setRegNome('');
+                      setRegEmail('');
+                      setRegSenha('');
+
+                      Alert.alert("Perfil Removido", "Sua conta local foi excluída com sucesso.");
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  };
+
+                  // DESVIO DE PLATAFORMA: Se for Web usa confirm() do navegador, se for Celular usa Alert.alert() nativo
+                  if (Platform.OS === 'web') {
+                    const confirmouWeb = window.confirm(`${titulo}\n\n${mensagem}`);
+                    if (confirmouWeb) {
+                      await executarExclusaoConta();
+                    }
+                  } else {
+                    Alert.alert(
+                      titulo,
+                      mensagem,
+                      [
+                        { text: "Cancelar", style: "cancel" },
+                        { text: "Sim, Excluir Tudo", style: "destructive", onPress: executarExclusaoConta }
+                      ]
+                    );
+                  }
+                }}
+              >
+                <Text style={styles.deleteButtonText}>❌ Excluir Meu Perfil</Text>
+              </TouchableOpacity>
+
             </View>
 
             <Text style={[styles.userPostsTitle, activeTheme.text]}>Minhas Postagens Salvas</Text>
