@@ -1,0 +1,14 @@
+# Pastas de Configuração e Compilação do Sistema (Esconder do GitHub)
+.expo/
+.vscode/
+node_modules/
+scripts/
+src/
+
+# Arquivos de Configuração de Ambiente (Esconder do GitHub)
+app.json
+tsconfig.json
+package-lock.json
+metro.config.js
+AGENTS.md
+LICENSE
