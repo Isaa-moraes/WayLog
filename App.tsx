@@ -219,7 +219,7 @@ export default function Index() {
 
   // Operação READ do CRUD SQLite
   async function carregarPostagens(databaseInstance?: any) {
-    if (Platform.OS === 'web') return; // Evita chamadas de banco no navegador
+    if (Platform.OS === 'web') return;
     const activeDb = databaseInstance || db;
     if (!activeDb) return;
     try {
@@ -256,7 +256,6 @@ export default function Index() {
   }
 
   // Operação CREATE do CRUD SQLite + Notificação Local
-  // Operação CREATE do CRUD - Adaptada de forma segura para Web e Mobile
   async function handlePublicarViagem() {
     if (!destino.trim() || !paisCidade.trim()) {
       Alert.alert('Aviso', 'Insira ao menos o nome do Destino e a Cidade/País.');
@@ -266,7 +265,6 @@ export default function Index() {
     try {
       const timestamp = new Date().toLocaleString('pt-BR');
 
-      // Criamos o objeto do novo post baseado nos inputs digitados
       const novoPost: PostViagem = {
         id: posts.length + 1,
         destino: destino.trim(),
@@ -281,11 +279,9 @@ export default function Index() {
       };
 
       if (Platform.OS === 'web') {
-        // Na Web, adicionamos diretamente no topo do estado de posts para atualizar o feed do Instagram na hora!
         setPosts([novoPost, ...posts]);
         console.log("Post salvo na memória da Web com sucesso!");
       } else if (db) {
-        // No celular, grava fisicamente no banco SQLite nativo
         await db.runAsync(
           `INSERT INTO viagens (destino, pais_cidade, memorias, latitude, longitude, modo_deslocamento, imagem_uri, data_hora, autor)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
@@ -294,7 +290,7 @@ export default function Index() {
         await carregarPostagens();
       }
 
-      // Agendamento da Notificação Local Inteligente (Dispara em ambas as plataformas)
+      // Agendamento da Notificação Local Inteligente
       await Notifications.scheduleNotificationAsync({
         content: {
           title: "🌍 Nova Memória Publicada no Waylog!",
@@ -315,16 +311,12 @@ export default function Index() {
       setMemorias('');
       setImagemUri(null);
 
-      setAbaAtual('home'); // Redireciona automaticamente o aluno para o Feed de Fotos
+      setAbaAtual('home');
     } catch (e) {
       console.error(e);
       Alert.alert('Erro', 'Falha ao processar o registro da publicação.');
     }
   }
-
-
-
-
 
   // Operação DELETE do CRUD SQLite
   async function handleDeletarRegistro(id: number) {
@@ -658,7 +650,7 @@ export default function Index() {
 }
 
 
-// ESTILOS DE LAYOUT VISUAL (Focados em cantos bem arredondados e Flat Design contemporâneo)
+// ESTILOS DE LAYOUT VISUAL
 const styles = StyleSheet.create({
   centerContainer: {
     flex: 1,
@@ -752,7 +744,7 @@ const styles = StyleSheet.create({
   },
 
 
-  // Cards Estilo Feed do Instagram
+  // Cards Estilo Feed
   instaHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -979,7 +971,7 @@ const styles = StyleSheet.create({
   },
 
 
-  // Barra de Navegação Inferior (Abas / TabBar)
+  // Barra de Navegação Inferior
   bottomTabBar: {
     position: 'absolute',
     bottom: 0,
